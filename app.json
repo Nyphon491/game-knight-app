@@ -1,36 +1,43 @@
 {
   "expo": {
-    "name": "my-app",
-    "slug": "my-app",
+    "name": "Game Knight",
+    "slug": "game-knight",
     "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "orientation": "default",
+    "icon": "./assets/images/Game_Knight_App_Icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.nyphon.myapp",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      },
+      "buildNumber": "1",
+      "appleTeamId": "H839Y86F94"
     },
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/images/android-icon-foreground.png",
-        "backgroundImage": "./assets/images/android-icon-background.png",
-        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+        "foregroundImage": "./assets/images/Game_Knight_App_Icon.png",
+        "backgroundImage": "./assets/images/Game_Knight_App_Icon.png",
+        "monochromeImage": "./assets/images/Game_Knight_App_Icon.png"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.nyphon.myapp"
     },
     "web": {
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/Game_Knight_App_Icon.png"
     },
     "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
+          "image": "./assets/images/Game_Knight_App_Icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff",
@@ -47,7 +54,7 @@
     "extra": {
       "router": {},
       "eas": {
-        "projectId": "f2b3aef1-f130-4b63-bb81-0d66b652a302"
+        "projectId": "63f9be2c-7c74-409a-924f-f5a2225302f1"
       }
     }
   }

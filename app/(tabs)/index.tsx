@@ -1,98 +1,167 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
-
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
+import { Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function HomeScreen() {
+  const router = useRouter();
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
+    <SafeAreaView style={styles.container}>
+      <View style={styles.topSection}>
         <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
+          source={require('@/assets/images/game-knight-logo.png')}
+          style={styles.logoImage}
+          resizeMode="contain"
         />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+        <Text style={styles.appName}>Game Knight</Text>
+      </View>
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+      <View style={styles.middleSection}>
+        <Text style={styles.subtext}>
+          Make every gathering{"\n"}more memorable!
+        </Text>
+      </View>
+
+      <View style={styles.bottomSection}>
+        <View style={styles.bottomBar}>
+          <View style={styles.actionsRow}>
+            <TouchableOpacity
+              style={styles.actionItem}
+              activeOpacity={0.8}
+              onPress={() => router.push('/choose-game')}
+            >
+              <Ionicons name="desktop-outline" size={24} color="#00AEEF" />
+              <Text style={styles.actionLabel}>White Board</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.actionItem}
+              activeOpacity={0.8}
+              onPress={() => router.push('/choose-game')}
+            >
+              <Ionicons name="refresh-circle-outline" size={24} color="#00AEEF" />
+              <Text style={styles.actionLabel}>Wheel Spin</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.centerNotchWrapper} pointerEvents="box-none">
+            <View style={styles.centerNotchBackground} />
+            <TouchableOpacity
+              style={styles.qrButton}
+              activeOpacity={0.8}
+              onPress={() => {}}
+            >
+              <Ionicons name="qr-code" size={24} color="#ffffff" />
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
+  container: {
+    flex: 1,
+    backgroundColor: '#ffffff',
+    paddingHorizontal: 32,
+  },
+  topSection: {
+    marginTop: 80,
     alignItems: 'center',
-    gap: 8,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  logoImage: {
+    width: 160,
+    height: 160,
+    marginBottom: 16,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
+  appName: {
+    fontSize: 32,
+    fontWeight: '600',
+  },
+  middleSection: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  subtext: {
+    fontSize: 18,
+    textAlign: 'center',
+    color: '#8E8E93',
+    lineHeight: 26,
+  },
+  bottomSection: {
+    marginBottom: 48,
+    alignItems: 'center',
+  },
+  bottomBar: {
+    width: '100%',
+    backgroundColor: '#ffffff',
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    paddingTop: 18,
+    paddingBottom: 16,
+    paddingHorizontal: 24,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.12,
+    shadowRadius: 4,
+    position: 'relative',
+  },
+  actionsRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  actionItem: {
+    width: '42%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
+  },
+  actionLabel: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#00AEEF',
+  },
+  button: {
+    backgroundColor: '#000000',
+    paddingHorizontal: 40,
+    paddingVertical: 16,
+    borderRadius: 999,
+  },
+  buttonText: {
+    color: '#ffffff',
+    fontSize: 18,
+    fontWeight: '600',
+  },
+  centerNotchWrapper: {
     position: 'absolute',
+    top: -16,
+    left: 0,
+    right: 0,
+    alignItems: 'center',
+  },
+  centerNotchBackground: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: '#ffffff',
+    borderWidth: 2,
+    borderColor: '#E6E6E6',
+  },
+  qrButton: {
+    position: 'absolute',
+    top: 8,
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: '#00AEEF',
+    alignItems: 'center',
+    justifyContent: 'center',
+    // button shadow
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    elevation: 6,
   },
 });
