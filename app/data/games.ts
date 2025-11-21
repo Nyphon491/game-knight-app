@@ -105,4 +105,67 @@ export const GAMES: GameItem[] = [
     icon: 'waveform',
     description: 'Enter a state of focused concentration with this engaging challenge.'
   },
+  {
+    name: 'Anagrams',
+    color: COLORS[1],
+    attrs: ['Teams', 'Puzzles'].map(normalizeAttr),
+    icon: 'alphabetical-variant',
+    description: 'Rearrange letters to form words in this challenging word puzzle game.'
+  },
+  {
+    name: 'Audience Meter',
+    color: COLORS[4],
+    attrs: ['Teams', 'Pop Culture'].map(normalizeAttr),
+    icon: 'chart-bar',
+    description: 'Gauge audience reactions and opinions in real-time polling.'
+  },
+  {
+    name: 'Head 2 Head Bands',
+    color: COLORS[9],
+    attrs: ['Teams', 'Disscussion', 'After Knight'].map(normalizeAttr),
+    icon: 'head-outline',
+    description: "Wear a headband with a secret word and guess what's on your head!"
+  },
+  {
+    name: 'Rank It!',
+    color: COLORS[10],
+    attrs: ['Teams', 'Pop Culture', 'Disscussion'].map(normalizeAttr),
+    icon: 'format-list-numbered',
+    description: 'Order items correctly in this challenging ranking competition game.'
+  },
+  {
+    name: 'Wave Length',
+    color: COLORS[0],
+    attrs: ['Trending', 'Close Friends', 'Disscussion'].map(normalizeAttr),
+    icon: 'sine-wave',
+    description: 'Find the perfect wavelength between two concepts in this mind-reading game.'
+  },
+  {
+    name: 'Wrong Answers Only',
+    color: COLORS[3],
+    attrs: ['Trending', 'Disscussion'].map(normalizeAttr),
+    icon: 'close-circle-outline',
+    description: 'Give intentionally wrong answers to questions - the funnier the better!'
+  },
+  {
+    name: 'Random First Letter',
+    color: COLORS[4],
+    attrs: ['Trending', 'Disscussion'].map(normalizeAttr),
+    icon: 'alphabetical',
+    description: 'Start all answers with the same randomly chosen letter!'
+  },
+  {
+    name: 'Charades',
+    color: COLORS[5],
+    attrs: ['Teams', 'Disscussion'].map(normalizeAttr),
+    icon: 'account-outline',
+    description: 'Act out words and phrases without speaking in this classic performance game.'
+  },
+  {
+    name: 'Pictionary',
+    color: COLORS[6],
+    attrs: ['Teams', 'Disscussion'].map(normalizeAttr),
+    icon: 'pencil-outline',
+    description: "Draw pictures and have teammates guess what you're illustrating!"
+  },
 ];
