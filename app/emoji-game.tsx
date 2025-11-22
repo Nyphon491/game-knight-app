@@ -1,7 +1,8 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import React, { useEffect, useMemo, useState } from 'react';
-import { Dimensions, Image, Pressable, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, Pressable, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import Header from './components/Header';
 import { getEmojiSlidesForLevel, getEmojiThemeForLevel } from './data/emojiLevels';
 
 export default function EmojiGameScreen() {
@@ -26,6 +27,7 @@ export default function EmojiGameScreen() {
 
   const router = useRouter();
   const { game, level, players } = useLocalSearchParams<{ game?: string; level?: string; players?: string }>();
+  const gameName = typeof game === 'string' ? game : 'Emoji Guess That';
   const levelNumber = level ? Number(level) : 1;
 
   const slides = useMemo(() => getEmojiSlidesForLevel(levelNumber), [levelNumber]);
@@ -55,17 +57,7 @@ export default function EmojiGameScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.headerRow}>
-        <View style={styles.headerLeft}>
-          <Image
-            source={require('@/assets/images/game-knight-logo.png')}
-            style={styles.logoImage}
-            resizeMode="contain"
-          />
-          <Text style={styles.appName}>Game Knight</Text>
-        </View>
-        <Text style={styles.gameName}>{theme}</Text>
-      </View>
+      <Header isGameScreen gameName={gameName} />
 
       <View style={styles.mainRow}>
         <View style={styles.sideColumn}>
@@ -100,11 +92,7 @@ export default function EmojiGameScreen() {
         </View>
       </View>
 
-      <View style={styles.backRow}>
-        <TouchableOpacity activeOpacity={0.8} onPress={() => router.back()}>
-          <Text style={styles.backText}>Back</Text>
-        </TouchableOpacity>
-      </View>
+      {/* Back button removed per request */}
     </SafeAreaView>
   );
 }
@@ -129,6 +117,5 @@ const styles = StyleSheet.create({
   centerArea: { flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 16 },
   emojiText: { fontSize: 64, textAlign: 'center' },
   answerText: { fontSize: 28, marginTop: 16, color: '#333', textAlign: 'center' },
-  backRow: { alignItems: 'center', marginBottom: 16 },
-  backText: { fontSize: 18, fontWeight: '600', color: '#00AEEF' },
+  
 });

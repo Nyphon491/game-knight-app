@@ -1,7 +1,8 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useMemo, useState } from 'react';
-import { Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import Header from './components/Header';
 
 const ROLE_INFO: Record<string, string> = {
   Mafia: 'Mafia eliminate one player each night. Work together to outnumber citizens.',
@@ -67,24 +68,7 @@ export default function MafiaSettings() {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Header */}
-      <View style={styles.headerRow}>
-        <View style={styles.headerLeft}>
-          <Image
-            source={require('@/assets/images/game-knight-logo.png')}
-            style={styles.logoImage}
-            resizeMode="contain"
-          />
-          <Text style={styles.appName}>Game Knight</Text>
-        </View>
-        <TouchableOpacity
-          style={styles.backButton}
-          activeOpacity={0.8}
-          onPress={() => router.back()}
-        >
-          <Ionicons name="return-up-back" size={24} color="#00AEEF" />
-        </TouchableOpacity>
-      </View>
+      <Header isGameScreen gameName="Mafia Settings" />
 
       <Text style={styles.screenTitle}>Mafia Settings</Text>
 
@@ -127,7 +111,14 @@ const styles = StyleSheet.create({
   backButton: { padding: 4 },
 
   rolesContainer: { padding: 20, gap: 12 },
-  screenTitle: { fontSize: 24, fontWeight: '800', color: '#00AEEF', paddingHorizontal: 20, paddingTop: 12, textAlign: 'center' },
+  screenTitle: {
+    fontSize: 24,
+    fontWeight: '700',
+    textAlign: 'center',
+    marginTop: 10,
+    marginBottom: 20,
+    color: '#000000',
+  },
   roleRow: {
     flexDirection: 'row',
     alignItems: 'center',

@@ -1,7 +1,8 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import React, { useEffect, useMemo, useState } from 'react';
-import { Dimensions, Image, Pressable, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, Pressable, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import Header from './components/Header';
 
 import { getAnagramThemeForLevel, getAnagramWordsForLevel } from './data/anagramsLevels';
 
@@ -118,17 +119,7 @@ export default function AnagramsGameScreen() {
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}
-      <View style={styles.headerRow}>
-        <View style={styles.headerLeft}>
-          <Image
-            source={require('@/assets/images/game-knight-logo.png')}
-            style={styles.logoImage}
-            resizeMode="contain"
-          />
-          <Text style={styles.appName}>Game Knight</Text>
-        </View>
-        <Text style={styles.gameName}>{gameName}</Text>
-      </View>
+      <Header isGameScreen gameName={gameName} />
 
       {/* Main content in a horizontal layout */}
       <View style={styles.mainRow}>

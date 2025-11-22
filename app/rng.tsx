@@ -2,7 +2,8 @@ import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import React, { useEffect, useRef, useState } from 'react';
-import { Animated, Dimensions, Easing, Image, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Animated, Dimensions, Easing, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import Header from './components/Header';
 
 export default function RNGScreen() {
   const [dimensions, setDimensions] = useState(Dimensions.get('window'));
@@ -18,7 +19,7 @@ export default function RNGScreen() {
       try {
         await ScreenOrientation.unlockAsync();
         await new Promise(resolve => setTimeout(resolve, 100));
-        await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE);
+        await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
       } catch {}
     };
 
@@ -209,17 +210,7 @@ export default function RNGScreen() {
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}
-      <View style={styles.headerRow}>
-        <View style={styles.headerLeft}>
-          <Image
-            source={require('@/assets/images/game-knight-logo.png')}
-            style={styles.logoImage}
-            resizeMode="contain"
-          />
-          <Text style={styles.appName}>Game Knight</Text>
-        </View>
-        <Text style={styles.gameName}>{gameName}</Text>
-      </View>
+      <Header isGameScreen gameName={gameName} />
 
       {/* Mode selector */}
       <View style={styles.topBar}>
@@ -241,17 +232,7 @@ export default function RNGScreen() {
         {renderMain()}
       </View>
 
-      {/* Back */}
-      <View style={styles.backRow}>
-        <TouchableOpacity
-          activeOpacity={0.8}
-          onPress={() => {
-            router.push('/choose-game');
-          }}
-        >
-          <Text style={styles.backText}>Back to Home</Text>
-        </TouchableOpacity>
-      </View>
+      {/* Back button removed per request */}
     </SafeAreaView>
   );
 }
@@ -396,14 +377,5 @@ const styles = StyleSheet.create({
     borderColor: '#e0e0e0',
     textAlign: 'center',
   },
-  backRow: {
-    alignItems: 'center',
-    marginTop: 8,
-    marginBottom: 16,
-  },
-  backText: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#00AEEF',
-  },
+  
 });

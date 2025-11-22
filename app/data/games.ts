@@ -92,13 +92,6 @@ export const GAMES: GameItem[] = [
     description: 'Can you guess the top answers in this family feud style game?'
   },
   {
-    name: 'Sit in a Circle',
-    color: COLORS[9],
-    attrs: ['Social', 'Party Game'].map(normalizeAttr),
-    icon: 'account-group',
-    description: 'A collection of fun party games perfect for groups!'
-  },
-  {
     name: 'Flow State',
     color: COLORS[2],
     attrs: ['Trending', 'Pop Culture'].map(normalizeAttr),

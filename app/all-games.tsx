@@ -1,8 +1,9 @@
+import { GAMES, GameItem } from '@/app/data/games';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { GAMES, GameItem } from './data/games';
+import Header from './components/Header';
 
 const AllGamesScreen = () => {
   const router = useRouter();
@@ -60,22 +61,12 @@ const AllGamesScreen = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.headerRow}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => router.back()}
-          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-        >
-          <Ionicons name="arrow-back" size={24} color="#000" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>All Games</Text>
-        <View style={{ width: 24 }} />
-      </View>
+      <Header />
 
       <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
         <Text style={styles.sectionTitle}>All Games</Text>
         
-        {GAMES.map((game, i, arr) => renderGameRow(game, i, arr))}
+        {GAMES.map((game: GameItem, i: number, arr: GameItem[]) => renderGameRow(game, i, arr))}
         
         <TouchableOpacity
           style={styles.suggestGameButton}

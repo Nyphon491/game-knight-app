@@ -1,7 +1,8 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import React, { useEffect, useState } from 'react';
-import { Dimensions, Image, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Dimensions, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import Header from './components/Header';
 
 export default function QRCodeScannerScreen() {
   const [dimensions, setDimensions] = useState(Dimensions.get('window'));
@@ -81,17 +82,7 @@ export default function QRCodeScannerScreen() {
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}
-      <View style={styles.headerRow}>
-        <View style={styles.headerLeft}>
-          <Image
-            source={require('@/assets/images/game-knight-logo.png')}
-            style={styles.logoImage}
-            resizeMode="contain"
-          />
-          <Text style={styles.appName}>Game Knight</Text>
-        </View>
-        <Text style={styles.gameName}>{gameName}</Text>
-      </View>
+      <Header />
 
       {/* Camera View Area */}
       <View style={styles.cameraContainer}>

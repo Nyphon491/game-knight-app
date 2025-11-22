@@ -2,7 +2,8 @@ import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import { Image, Linking, Modal, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Linking, Modal, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import Header from './components/Header';
 import { GAMES, GameItem } from './data/games';
 
 // Descriptions and icons are now provided per-game in the shared data file
@@ -95,31 +96,7 @@ export default function ChooseGame() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.headerRow}>
-        <TouchableOpacity
-          style={styles.logoTapArea}
-          activeOpacity={0.8}
-          onPress={() => {
-            router.push('/');
-          }}
-        >
-          <Image
-            source={require('@/assets/images/game-knight-logo.png')}
-            style={styles.logoImage}
-            resizeMode="contain"
-          />
-        </TouchableOpacity>
-        <Text style={styles.appName}>Game Knight</Text>
-        <TouchableOpacity
-          style={styles.backButton}
-          activeOpacity={0.8}
-          onPress={() => {
-            router.back();
-          }}
-        >
-          <Ionicons name="return-up-back" size={24} color="#00AEEF" />
-        </TouchableOpacity>
-      </View>
+      <Header />
 
       <View style={styles.contentWrapper}>
         <ScrollView contentContainerStyle={styles.listScrollContent} showsVerticalScrollIndicator={false}>
@@ -380,7 +357,7 @@ const styles = StyleSheet.create({
     borderRadius: 999,
     paddingHorizontal: 12,
     paddingVertical: 10,
-    marginTop: 20,
+    marginTop: 14,
     backgroundColor: '#FAFAFA',
   },
   searchIcon: {
@@ -438,6 +415,8 @@ const styles = StyleSheet.create({
   },
   popularSection: {
     backgroundColor: '#f0f8ff',
+    borderWidth: 0.75,
+    borderColor: '#d4e9ff',
     borderRadius: 12,
     marginTop: 12,
     marginBottom: 8,
@@ -723,7 +702,7 @@ const styles = StyleSheet.create({
   },
   centerNotchWrapper: {
     position: 'absolute',
-    top: -16,
+    top: -30,
     left: 0,
     right: 0,
     alignItems: 'center',
@@ -733,8 +712,13 @@ const styles = StyleSheet.create({
     height: 64,
     borderRadius: 32,
     backgroundColor: '#ffffff',
-    borderWidth: 2,
-    borderColor: '#E6E6E6',
+    borderWidth: 1,
+    borderColor: '#ecececff',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    elevation: 6,
   },
   qrButton: {
     position: 'absolute',

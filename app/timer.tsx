@@ -2,7 +2,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import React, { useEffect, useRef, useState } from 'react';
-import { Dimensions, Image, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Dimensions, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import Header from './components/Header';
 
 export default function TimerScreen() {
   const [dimensions, setDimensions] = useState(Dimensions.get('window'));
@@ -16,8 +17,6 @@ export default function TimerScreen() {
 
     const lockOrientation = async () => {
       try {
-        await ScreenOrientation.unlockAsync();
-        await new Promise(resolve => setTimeout(resolve, 100));
         await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
       } catch {}
     };
@@ -93,17 +92,7 @@ export default function TimerScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.headerRow}>
-        <View style={styles.headerLeft}>
-          <Image
-            source={require('@/assets/images/game-knight-logo.png')}
-            style={styles.logoImage}
-            resizeMode="contain"
-          />
-          <Text style={styles.appName}>Game Knight</Text>
-        </View>
-        <Text style={styles.gameName}>{gameName}</Text>
-      </View>
+      <Header isGameScreen gameName={gameName} />
 
       <View style={styles.timerContainer}>
         <Text style={styles.timeText}>{minutes}:{seconds}</Text>
@@ -152,11 +141,7 @@ export default function TimerScreen() {
         </View>
       </View>
 
-      <View style={styles.backRow}>
-        <TouchableOpacity activeOpacity={0.8} onPress={handleBack}>
-          <Text style={styles.backText}>Back</Text>
-        </TouchableOpacity>
-      </View>
+      {/* Back button removed per request */}
     </SafeAreaView>
   );
 }
@@ -263,14 +248,5 @@ const styles = StyleSheet.create({
     borderColor: '#e0e0e0',
     textAlign: 'center',
   },
-  backRow: {
-    alignItems: 'center',
-    marginTop: 20,
-    marginBottom: 20,
-  },
-  backText: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#00AEEF',
-  },
+  
 });

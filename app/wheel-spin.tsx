@@ -2,8 +2,9 @@ import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import { useEffect, useRef, useState } from 'react';
-import { Animated, Dimensions, Image, SafeAreaView, ScrollView, StyleSheet, Switch, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Animated, Dimensions, SafeAreaView, ScrollView, StyleSheet, Switch, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Svg, { G, Path, Circle as SvgCircle, Text as SvgText } from 'react-native-svg';
+import Header from './components/Header';
 
 const { width: dimensionsWidth, height: dimensionsHeight } = Dimensions.get('window');
 
@@ -229,17 +230,7 @@ export default function WheelSpinScreen() {
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}
-      <View style={styles.headerRow}>
-        <View style={styles.headerLeft}>
-          <Image
-            source={require('@/assets/images/game-knight-logo.png')}
-            style={styles.logoImage}
-            resizeMode="contain"
-          />
-          <Text style={styles.appName}>Game Knight</Text>
-        </View>
-        <Text style={styles.gameName}>{gameName}</Text>
-      </View>
+      <Header isGameScreen gameName={gameName} />
 
       {/* Main content with text inputs and wheel */}
       <View style={styles.mainContent}>
@@ -368,16 +359,7 @@ export default function WheelSpinScreen() {
           <Text style={styles.resultText}>{selectedText}</Text>
         </Animated.View>
       )}
-
-      {/* Back button */}
-      <View style={styles.backRow}>
-        <TouchableOpacity
-          activeOpacity={0.8}
-          onPress={() => router.push('/choose-game')}
-        >
-          <Text style={styles.backText}>Back to Home</Text>
-        </TouchableOpacity>
-      </View>
+      
     </SafeAreaView>
   );
 }
@@ -548,13 +530,5 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     paddingHorizontal: 20,
   },
-  backRow: {
-    alignItems: 'center',
-    marginTop: 8,
-  },
-  backText: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#00AEEF',
-  },
+  
 });

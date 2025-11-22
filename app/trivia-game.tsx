@@ -2,6 +2,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import React, { useEffect, useMemo, useState } from 'react';
 import { Dimensions, Image, Platform, Pressable, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import Header from './components/Header';
 import { getTriviaCategoryForLevel, getTriviaQuestionsForLevel } from './data/triviaLevels';
 
 // Conditionally import only on native (not web)
@@ -191,25 +192,13 @@ export default function TriviaGameScreen() {
               </View>
             </View>
 
-            <View style={styles.backRow}>
-              <Text style={styles.tvBackText}>Back</Text>
-            </View>
+            {/* Back indicator removed per request */}
           </SafeAreaView>
         </ExternalDisplay>
       )}
 
       {/* Phone Display - Header */}
-      <View style={styles.headerRow}>
-        <View style={styles.headerLeft}>
-          <Image
-            source={require('@/assets/images/game-knight-logo.png')}
-            style={styles.logoImage}
-            resizeMode="contain"
-          />
-          <Text style={styles.appName}>Game Knight</Text>
-        </View>
-        <Text style={styles.gameName}>{gameName}</Text>
-      </View>
+      <Header isGameScreen gameName={gameName} />
 
       {/* Phone Display - Main content */}
       <View style={styles.mainRow}>
@@ -275,18 +264,7 @@ export default function TriviaGameScreen() {
         </View>
       </View>
 
-      {/* Phone Display - Back button */}
-      <View style={styles.backRow}>
-        <TouchableOpacity
-          activeOpacity={0.8}
-          onPress={() => {
-            console.log('Presenter mode:', presenterMode, 'screens:', screenKeys);
-            router.back();
-          }}
-        >
-          <Text style={styles.backText}>Back</Text>
-        </TouchableOpacity>
-      </View>
+      {/* Back button removed per request */}
     </SafeAreaView>
   );
 }
@@ -383,15 +361,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#00AEEF',
   },
-  backRow: {
-    alignItems: 'center',
-    marginTop: 8,
-  },
-  backText: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#00AEEF',
-  },
+  
 
   // TV styles (larger text and elements)
   tvContainer: {

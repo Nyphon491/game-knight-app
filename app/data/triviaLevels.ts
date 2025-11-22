@@ -5,6 +5,7 @@ export type TriviaLevel = {
     question: string;
     answer: string;
   }[];
+  afterKnight?: boolean;
 };
 
 export const TRIVIA_LEVELS: TriviaLevel[] = [
@@ -516,6 +517,344 @@ export const TRIVIA_LEVELS: TriviaLevel[] = [
       { question: "After 9/11 this Disk Jockey changed his name from Arab attack to what?", answer: "DJ Khaled" },
       { question: "What is the term for the bending of light as it passes through different mediums?", answer: "Refraction" },
       { question: "How many hearts do squids have in their body?", answer: "three hearts" }
+    ]
+  }
+  ,
+  // After Knight Levels
+  {
+    level: 35,
+    category: "After Knight — General Knowledge",
+    afterKnight: true,
+    questions: [
+      { question: "What is the capital of Canada?", answer: "Ottawa" },
+      { question: "Which metal is liquid at room temperature?", answer: "Mercury" },
+      { question: "How many sides does a hexagon have?", answer: "6" },
+      { question: "What color do you get when you mix blue and yellow?", answer: "Green" },
+      { question: "Which ocean borders California?", answer: "Pacific Ocean" },
+      { question: "What is H2O commonly known as?", answer: "Water" },
+      { question: "Which planet has the Great Red Spot?", answer: "Jupiter" },
+      { question: "What is the hardest natural substance?", answer: "Diamond" },
+      { question: "What gas do humans exhale in large amounts?", answer: "Carbon dioxide" }
+    ]
+  },
+  {
+    level: 36,
+    category: "After Knight — History & Culture",
+    afterKnight: true,
+    questions: [
+      { question: "Who wrote the play 'Romeo and Juliet'?", answer: "William Shakespeare" },
+      { question: "In what year did the Titanic sink?", answer: "1912" },
+      { question: "Who was the first President of the United States?", answer: "George Washington" },
+      { question: "Which country gifted the Statue of Liberty to the USA?", answer: "France" },
+      { question: "What ancient civilization built Machu Picchu?", answer: "Inca" },
+      { question: "What is the primary language spoken in Brazil?", answer: "Portuguese" },
+      { question: "Which holiday falls on October 31st?", answer: "Halloween" },
+      { question: "Which artist painted the Mona Lisa?", answer: "Leonardo da Vinci" },
+      { question: "Which city hosted the 2016 Summer Olympics?", answer: "Rio de Janeiro" }
+    ]
+  },
+  {
+    level: 37,
+    category: "After Knight — Science & Nature",
+    afterKnight: true,
+    questions: [
+      { question: "What part of the plant conducts photosynthesis primarily?", answer: "Leaves" },
+      { question: "What is the chemical symbol for sodium?", answer: "Na" },
+      { question: "How many bones are in an adult human body?", answer: "206" },
+      { question: "What gas makes up most of Earth's atmosphere?", answer: "Nitrogen" },
+      { question: "What is the process plants use to make food?", answer: "Photosynthesis" },
+      { question: "What do bees collect to make honey?", answer: "Nectar" },
+      { question: "What instrument measures temperature?", answer: "Thermometer" },
+      { question: "Which blood cells fight infection?", answer: "White blood cells" },
+      { question: "What animal is the largest land mammal?", answer: "African elephant" }
+    ]
+  },
+  {
+    level: 38,
+    category: "After Knight — Entertainment",
+    afterKnight: true,
+    questions: [
+      { question: "Which movie features a DeLorean time machine?", answer: "Back to the Future" },
+      { question: "Who played Captain Jack Sparrow?", answer: "Johnny Depp" },
+      { question: "Which streaming service released 'Stranger Things'?", answer: "Netflix" },
+      { question: "What is the highest-grossing film franchise?", answer: "Marvel Cinematic Universe" },
+      { question: "Who is the author of 'Harry Potter'?", answer: "J.K. Rowling" },
+      { question: "Which singer is known as the 'Queen Bey'?", answer: "Beyoncé" },
+      { question: "What game console introduced 'Wii Sports'?", answer: "Nintendo Wii" },
+      { question: "Which film won Best Picture at the 2020 Oscars?", answer: "Parasite" },
+      { question: "Which show features a character named Eleven?", answer: "Stranger Things" }
+    ]
+  },
+  {
+    level: 39,
+    category: "After Knight — Geography",
+    afterKnight: true,
+    questions: [
+      { question: "What is the largest desert in the world?", answer: "Antarctic Polar Desert" },
+      { question: "Mount Everest lies on which mountain range?", answer: "Himalayas" },
+      { question: "What river runs through Egypt?", answer: "Nile" },
+      { question: "What is the capital of Australia?", answer: "Canberra" },
+      { question: "Which country has the city of Marrakech?", answer: "Morocco" },
+      { question: "What continent is the Sahara on?", answer: "Africa" },
+      { question: "Which US state is known as the 'Land of 10,000 Lakes'?", answer: "Minnesota" },
+      { question: "What is the smallest continent by land area?", answer: "Australia" },
+      { question: "Which sea separates Europe and Africa near Spain?", answer: "Mediterranean Sea" }
+    ]
+  },
+  {
+    level: 40,
+    category: "After Knight — Tech & Terms",
+    afterKnight: true,
+    questions: [
+      { question: "What does CPU stand for?", answer: "Central Processing Unit" },
+      { question: "What does 'URL' stand for?", answer: "Uniform Resource Locator" },
+      { question: "Which company makes the Pixel phone?", answer: "Google" },
+      { question: "What is the name for malicious software?", answer: "Malware" },
+      { question: "What does 'AI' stand for?", answer: "Artificial Intelligence" },
+      { question: "Which company created the PlayStation?", answer: "Sony" },
+      { question: "What does HTML stand for?", answer: "HyperText Markup Language" },
+      { question: "Which connector replaced the headphone jack on many phones?", answer: "USB-C" },
+      { question: "What does Wi‑Fi commonly connect to?", answer: "Wireless local network / internet" }
+    ]
+  },
+  {
+    level: 41,
+    category: "After Knight — Sports",
+    afterKnight: true,
+    questions: [
+      { question: "How many players on the field per soccer team?", answer: "11" },
+      { question: "In basketball, how many points is a shot beyond the arc worth?", answer: "3" },
+      { question: "In tennis, what is 0 called?", answer: "Love" },
+      { question: "In golf, what is 2 under par on a hole?", answer: "Eagle" },
+      { question: "Which country hosts Wimbledon?", answer: "England" },
+      { question: "How many strikes for a perfect bowling game?", answer: "12" },
+      { question: "What sport uses a shuttlecock?", answer: "Badminton" },
+      { question: "In baseball, how many outs end a half-inning?", answer: "3" },
+      { question: "What color is the jersey for Tour de France leader?", answer: "Yellow" }
+    ]
+  },
+  {
+    level: 42,
+    category: "After Knight — Food",
+    afterKnight: true,
+    questions: [
+      { question: "Sushi traditionally uses what kind of rice?", answer: "Vinegared rice" },
+      { question: "What spice is made from dried crocus stigmas?", answer: "Saffron" },
+      { question: "What cheese is traditionally on a Margherita pizza?", answer: "Mozzarella" },
+      { question: "What legume is the base of hummus?", answer: "Chickpeas" },
+      { question: "What is the main ingredient in tofu?", answer: "Soybeans" },
+      { question: "What fruit is used to make guacamole?", answer: "Avocado" },
+      { question: "What grain is used to make risotto?", answer: "Arborio rice" },
+      { question: "Which vitamin do you get from sunlight?", answer: "Vitamin D" },
+      { question: "What is the cooking method of food sealed and cooked in water bath?", answer: "Sous-vide" }
+    ]
+  },
+  {
+    level: 43,
+    category: "After Knight — Word & Language",
+    afterKnight: true,
+    questions: [
+      { question: "A word with the opposite meaning is called a what?", answer: "Antonym" },
+      { question: "What do we call a word that imitates a sound (e.g., buzz)?", answer: "Onomatopoeia" },
+      { question: "What language has the most native speakers?", answer: "Mandarin Chinese" },
+      { question: "What is the plural of 'criterion'?", answer: "Criteria" },
+      { question: "What is a palindrome?", answer: "A word/phrase that reads the same backward and forward" },
+      { question: "What is the study of word origins called?", answer: "Etymology" },
+      { question: "What punctuation ends a question?", answer: "Question mark" },
+      { question: "What is the term for two words combined into one (e.g., don't)?", answer: "Contraction" },
+      { question: "What is the opposite of a synonym?", answer: "Antonym" }
+    ]
+  },
+  {
+    level: 44,
+    category: "After Knight — Music",
+    afterKnight: true,
+    questions: [
+      { question: "How many notes in a standard major scale?", answer: "7" },
+      { question: "Which clef is also called the G-clef?", answer: "Treble clef" },
+      { question: "Which composer became deaf later in life?", answer: "Beethoven" },
+      { question: "What is the tempo marking meaning 'fast'?", answer: "Allegro" },
+      { question: "What do DJs use to blend songs smoothly?", answer: "Crossfader" },
+      { question: "Which instrument has keys, pedals, and strings inside?", answer: "Piano" },
+      { question: "What is a group's first released collection of songs called?", answer: "Debut album" },
+      { question: "Which singer is known as 'The Weeknd' by stage name?", answer: "Abel Tesfaye" },
+      { question: "Which symbol raises a note by a semitone?", answer: "Sharp (#)" }
+    ]
+  },
+  {
+    level: 45,
+    category: "After Knight — Business & Econ",
+    afterKnight: true,
+    questions: [
+      { question: "What does CEO stand for?", answer: "Chief Executive Officer" },
+      { question: "What is the term for a general rise in prices?", answer: "Inflation" },
+      { question: "What market term describes a prolonged decline in stock prices?", answer: "Bear market" },
+      { question: "What does GDP stand for?", answer: "Gross Domestic Product" },
+      { question: "What is money kept for unexpected expenses called?", answer: "Emergency fund" },
+      { question: "What is the term for owning part of a company?", answer: "Equity" },
+      { question: "What does IPO stand for?", answer: "Initial Public Offering" },
+      { question: "What is a budget deficit?", answer: "When expenses exceed revenue" },
+      { question: "What do we call the interest earned on interest?", answer: "Compound interest" }
+    ]
+  },
+  {
+    level: 46,
+    category: "After Knight — Space",
+    afterKnight: true,
+    questions: [
+      { question: "What galaxy do we live in?", answer: "Milky Way" },
+      { question: "What is Earth's natural satellite?", answer: "The Moon" },
+      { question: "What planet is known for its rings?", answer: "Saturn" },
+      { question: "What is a space rock that reaches Earth's surface called?", answer: "Meteorite" },
+      { question: "What force keeps planets in orbit?", answer: "Gravity" },
+      { question: "What is the term for a star explosion?", answer: "Supernova" },
+      { question: "What is the nearest star to Earth?", answer: "The Sun" },
+      { question: "What is the name of NASA's famous space telescope launched in 1990?", answer: "Hubble Space Telescope" },
+      { question: "How long is one Earth day?", answer: "24 hours" }
+    ]
+  },
+  {
+    level: 47,
+    category: "After Knight — Health",
+    afterKnight: true,
+    questions: [
+      { question: "What vitamin is mainly obtained from citrus fruits?", answer: "Vitamin C" },
+      { question: "What organ pumps blood through the body?", answer: "Heart" },
+      { question: "What macronutrient builds and repairs tissues?", answer: "Protein" },
+      { question: "What is the medical term for high blood pressure?", answer: "Hypertension" },
+      { question: "What is the normal human body temperature in °F?", answer: "98.6" },
+      { question: "What mineral is important for strong bones and teeth?", answer: "Calcium" },
+      { question: "What is the body's largest organ?", answer: "Skin" },
+      { question: "What is the term for difficulty sleeping?", answer: "Insomnia" },
+      { question: "What organ detoxifies chemicals and metabolizes drugs?", answer: "Liver" }
+    ]
+  },
+  {
+    level: 48,
+    category: "After Knight — Transportation",
+    afterKnight: true,
+    questions: [
+      { question: "What does EV stand for in cars?", answer: "Electric Vehicle" },
+      { question: "What is the left side of a ship called?", answer: "Port" },
+      { question: "What do you call the map display in a car dashboard?", answer: "Navigation/GPS" },
+      { question: "What is the speed unit commonly used in aviation?", answer: "Knots" },
+      { question: "What road sign color usually indicates 'Stop'?", answer: "Red" },
+      { question: "What do we call the thing that keeps cars from skidding (ABS)?", answer: "Anti-lock Braking System" },
+      { question: "What is the main runway area at an airport called?", answer: "Runway" },
+      { question: "What do you call a bicycle with one wheel?", answer: "Unicycle" },
+      { question: "What is the forward-facing left/right control of an aircraft called?", answer: "Yoke" }
+    ]
+  },
+  {
+    level: 49,
+    category: "After Knight — Random Mix",
+    afterKnight: true,
+    questions: [
+      { question: "What do you call an animal that eats only plants?", answer: "Herbivore" },
+      { question: "What instrument has six strings and is often strummed?", answer: "Guitar" },
+      { question: "What color are most school buses in the US?", answer: "Yellow" },
+      { question: "What is the tallest animal on Earth?", answer: "Giraffe" },
+      { question: "What device converts sound into an electrical signal for recording?", answer: "Microphone" },
+      { question: "What do you call a baby cat?", answer: "Kitten" },
+      { question: "Which season comes after summer in the Northern Hemisphere?", answer: "Autumn/Fall" },
+      { question: "What do you call frozen water?", answer: "Ice" },
+      { question: "What do bees live in as a colony?", answer: "Hive" }
+    ]
+  },
+  {
+    level: 50,
+    category: "After Knight — Numbers & Logic",
+    afterKnight: true,
+    questions: [
+      { question: "What is the Roman numeral for 50?", answer: "L" },
+      { question: "What is the square root of 81?", answer: "9" },
+      { question: "How many degrees in a right angle?", answer: "90" },
+      { question: "What is the next prime after 7?", answer: "11" },
+      { question: "A triangle with all sides equal is called?", answer: "Equilateral" },
+      { question: "What number is 'a dozen'?", answer: "12" },
+      { question: "How many centimeters in a meter?", answer: "100" },
+      { question: "What is 15% as a decimal?", answer: "0.15" },
+      { question: "What is the median of 2, 5, 9?", answer: "5" }
+    ]
+  },
+  {
+    level: 51,
+    category: "After Knight — Art & Design",
+    afterKnight: true,
+    questions: [
+      { question: "Primary colors of pigment are red, blue, and what?", answer: "Yellow" },
+      { question: "What design term means 'empty space'?", answer: "Negative space" },
+      { question: "Which file format often supports transparency: PNG or JPG?", answer: "PNG" },
+      { question: "What do we call a preliminary drawing?", answer: "Sketch" },
+      { question: "What is the tool used to mix paint on?", answer: "Palette" },
+      { question: "Which art movement is Salvador Dalí associated with?", answer: "Surrealism" },
+      { question: "What do UI and UX stand for?", answer: "User Interface and User Experience" },
+      { question: "What is the term for a repeating decorative design?", answer: "Pattern" },
+      { question: "Which color is made by mixing red and blue?", answer: "Purple" }
+    ]
+  },
+  {
+    level: 52,
+    category: "After Knight — Pop Culture",
+    afterKnight: true,
+    questions: [
+      { question: "Who is the masked vigilante of Gotham City?", answer: "Batman" },
+      { question: "Which series features houses like Stark and Lannister?", answer: "Game of Thrones" },
+      { question: "What handheld console did Nintendo release in 1989?", answer: "Game Boy" },
+      { question: "Which rapper released the album 'The Blueprint'?", answer: "Jay-Z" },
+      { question: "What is the name of Mario's brother?", answer: "Luigi" },
+      { question: "Which platform popularized short-form 15s videos before extending lengths?", answer: "TikTok" },
+      { question: "Who sings 'Shape of You'?", answer: "Ed Sheeran" },
+      { question: "Which superhero is also known as 'The Merc with a Mouth'?", answer: "Deadpool" },
+      { question: "What is the wizarding school Harry Potter attends?", answer: "Hogwarts" }
+    ]
+  },
+  {
+    level: 53,
+    category: "After Knight — Nature & Weather",
+    afterKnight: true,
+    questions: [
+      { question: "What scale measures earthquake magnitude?", answer: "Richter scale" },
+      { question: "What do you call a scientist who studies weather?", answer: "Meteorologist" },
+      { question: "What type of cloud is fluffy and white?", answer: "Cumulus" },
+      { question: "What is precipitation that freezes on contact?", answer: "Freezing rain" },
+      { question: "What weather instrument measures air pressure?", answer: "Barometer" },
+      { question: "What phenomenon creates a spectrum after rain?", answer: "Rainbow" },
+      { question: "What is a violent rotating column of air called?", answer: "Tornado" },
+      { question: "Which front usually brings colder air?", answer: "Cold front" },
+      { question: "What is a long period with little or no rain called?", answer: "Drought" }
+    ]
+  },
+  {
+    level: 54,
+    category: "After Knight — Grab Bag",
+    afterKnight: true,
+    questions: [
+      { question: "Which device do you use to take your pulse?", answer: "Two fingers on wrist/neck (no device)" },
+      { question: "What is the currency of the UK?", answer: "Pound sterling" },
+      { question: "What instrument keeps time with a regular click?", answer: "Metronome" },
+      { question: "What animal is known as the 'King of the Jungle'?", answer: "Lion" },
+      { question: "What is the opposite of vertical?", answer: "Horizontal" },
+      { question: "What type of energy is stored in a stretched spring?", answer: "Potential energy" },
+      { question: "What do you call the study of the past through artifacts?", answer: "Archaeology" },
+      { question: "What is the liquid metal used in thermometers (older ones)?", answer: "Mercury" },
+      { question: "What is the main gas in fizzy drinks?", answer: "Carbon dioxide" }
+    ]
+  },
+  {
+    level: 55,
+    category: "After Knight — Grab",
+    afterKnight: true,
+    questions: [
+      { question: "Which device do you use to take your pulse?", answer: "Two fingers on wrist/neck (no device)" },
+      { question: "What is the currency of the UK?", answer: "Pound sterling" },
+      { question: "What instrument keeps time with a regular click?", answer: "Metronome" },
+      { question: "What animal is known as the 'King of the Jungle'?", answer: "Lion" },
+      { question: "What is the opposite of vertical?", answer: "Horizontal" },
+      { question: "What type of energy is stored in a stretched spring?", answer: "Potential energy" },
+      { question: "What do you call the study of the past through artifacts?", answer: "Archaeology" },
+      { question: "What is the liquid metal used in thermometers (older ones)?", answer: "Mercury" },
+      { question: "What is the main gas in fizzy drinks?", answer: "Carbon dioxide" }
     ]
   }
 ];

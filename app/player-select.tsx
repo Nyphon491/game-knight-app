@@ -1,7 +1,7 @@
-import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useMemo, useState } from 'react';
-import { Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import Header from './components/Header';
 
 const GAME_PLAYER_OPTIONS: Record<string, number[]> = {
   'Common Knowledge Trivia': [2, 3, 4],
@@ -40,31 +40,7 @@ export default function PlayerSelectScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.headerRow}>
-        <TouchableOpacity
-          style={styles.logoTapArea}
-          activeOpacity={0.8}
-          onPress={() => {
-            router.push('/');
-          }}
-        >
-          <Image
-            source={require('@/assets/images/game-knight-logo.png')}
-            style={styles.logoImage}
-            resizeMode="contain"
-          />
-        </TouchableOpacity>
-        <Text style={styles.appName}>Game Knight</Text>
-        <TouchableOpacity
-          style={styles.backButton}
-          activeOpacity={0.8}
-          onPress={() => {
-            router.back();
-          }}
-        >
-          <Ionicons name="return-up-back" size={24} color="#00AEEF" />
-        </TouchableOpacity>
-      </View>
+      <Header />
 
       {gameName ? (
         <Text style={styles.gameName}>{gameName}</Text>
@@ -125,30 +101,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingTop: 12,
     paddingBottom: 24,
-  },
-  headerRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: '#E6E6E6',
-    paddingBottom: 12,
-  },
-  logoTapArea: {
-    padding: 4,
-    marginRight: 4,
-  },
-  logoImage: {
-    width: 40,
-    height: 40,
-  },
-  appName: {
-    fontSize: 24,
-    fontWeight: '600',
-    flex: 1,
-  },
-  backButton: {
-    padding: 4,
-    marginRight: 16,
   },
   gameName: {
     marginTop: 24,

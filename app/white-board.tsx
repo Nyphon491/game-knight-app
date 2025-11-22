@@ -2,8 +2,9 @@ import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import React, { useEffect, useRef, useState } from 'react';
-import { Dimensions, Image, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Dimensions, SafeAreaView, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import Svg, { Path as SvgPath } from 'react-native-svg';
+import Header from './components/Header';
 
 export default function WhiteBoardScreen() {
   const [dimensions, setDimensions] = useState(Dimensions.get('window'));
@@ -50,7 +51,7 @@ export default function WhiteBoardScreen() {
 
   const gameName = typeof game === 'string' ? game : 'White Board';
   const [text, setText] = useState('');
-  const [inputMode, setInputMode] = useState<'typing' | 'pencil'>('typing');
+  const [inputMode, setInputMode] = useState<'typing' | 'pencil'>('pencil');
   const [paths, setPaths] = useState<Array<{ x: number; y: number }[]>>([]);
   const [currentPath, setCurrentPath] = useState<{ x: number; y: number }[]>([]);
   const svgRef = useRef<View>(null);
@@ -127,17 +128,7 @@ export default function WhiteBoardScreen() {
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}
-      <View style={styles.headerRow}>
-        <View style={styles.headerLeft}>
-          <Image
-            source={require('@/assets/images/game-knight-logo.png')}
-            style={styles.logoImage}
-            resizeMode="contain"
-          />
-          <Text style={styles.appName}>Game Knight</Text>
-        </View>
-        <Text style={styles.gameName}>{gameName}</Text>
-      </View>
+      <Header isGameScreen gameName={gameName} />
 
       {/* Input mode selector and clear button */}
       <View style={styles.topBar}>
@@ -197,7 +188,6 @@ export default function WhiteBoardScreen() {
             placeholderTextColor="#999"
             multiline={false}
             textAlign="center"
-            autoFocus
             maxLength={30}
             textAlignVertical="center"
           />
@@ -235,17 +225,7 @@ export default function WhiteBoardScreen() {
         )}
       </View>
 
-      {/* Back button */}
-      <View style={styles.backRow}>
-        <TouchableOpacity
-          activeOpacity={0.8}
-          onPress={() => {
-            router.push('/choose-game');
-          }}
-        >
-          <Text style={styles.backText}>Back to Home</Text>
-        </TouchableOpacity>
-      </View>
+      {/* Back button removed per request */}
     </SafeAreaView>
   );
 }

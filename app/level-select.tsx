@@ -1,7 +1,8 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useMemo, useState } from 'react';
-import { Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, LayoutChangeEvent, NativeScrollEvent, NativeSyntheticEvent, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import Header from './components/Header';
 import { ANAGRAM_LEVELS, getAnagramThemeForLevel } from './data/anagramsLevels';
 import { EMOJI_TOTAL_LEVELS, getEmojiThemeForLevel } from './data/emojiLevels';
 import { IYKYK_TOTAL_LEVELS } from './data/iykykLevels';
@@ -31,9 +32,12 @@ export default function LevelSelectScreen() {
       : 10;
 
   const [selectedLevel, setSelectedLevel] = useState<number | null>(null);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [pageWidth, setPageWidth] = useState(0);
   const [playedLevelsLocal, setPlayedLevelsLocal] = useState<Set<number>>(
     () => new Set(gameName ? getPlayedLevels(gameName) : []),
   );
+  const [afterKnightUnlocked, setAfterKnightUnlocked] = useState(false);
 
   const isPlayed = (level: number) => playedLevelsLocal.has(level);
 
@@ -50,141 +54,229 @@ export default function LevelSelectScreen() {
     toggleLevelPlayed(gameName, level);
   };
 
-  const levels = useMemo(() => Array.from({ length: TOTAL_LEVELS }, (_, i) => i + 1), []);
+  const levels = useMemo(() => Array.from({ length: TOTAL_LEVELS }, (_, i) => i + 1), [TOTAL_LEVELS]);
+
+  // Trivia-specific splits
+  const triviaGeneralLevels = useMemo(() => {
+    if (gameName !== 'Common Knowledge Trivia') return [] as number[];
+    return TRIVIA_LEVELS.filter((l) => !l.afterKnight).map((l) => l.level);
+  }, [gameName]);
+
+  const triviaAfterKnightLevels = useMemo(() => {
+    if (gameName !== 'Common Knowledge Trivia') return [] as number[];
+    return TRIVIA_LEVELS.filter((l) => l.afterKnight).map((l) => l.level);
+  }, [gameName]);
+
+  // We will render 3 pages:
+  // 1) General Levels (levels 1..TOTAL_LEVELS)
+  // 2) After Knight Levels (renumbered starting at 1)
+  // 3) Player Created Levels (coming soon)
 
   const isStartEnabled = selectedLevel != null;
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.headerRow}>
-        <TouchableOpacity
-          style={styles.logoTapArea}
-          activeOpacity={0.8}
-          onPress={() => {
-            router.push('/choose-game');
-          }}
-        >
-          <Image
-            source={require('@/assets/images/game-knight-logo.png')}
-            style={styles.logoImage}
-            resizeMode="contain"
-          />
-        </TouchableOpacity>
-        <Text style={styles.appName}>Game Knight</Text>
-        <TouchableOpacity
-          style={styles.backButton}
-          activeOpacity={0.8}
-          onPress={() => {
-            router.back();
-          }}
-        >
-          <Ionicons name="return-up-back" size={24} color="#00AEEF" />
-        </TouchableOpacity>
-      </View>
+      <Header />
 
       <View style={styles.contentWrapper}>
-        <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-          {gameName ? <Text style={styles.gameName}>{gameName}</Text> : null}
-
-          <View style={styles.levelList}>
-            {levels.map((level) => {
-              const isSelected = selectedLevel === level;
-              const played = isPlayed(level);
-              return (
-                <View key={level} style={styles.levelRow}>
-                  <TouchableOpacity
-                    style={[styles.levelPill, isSelected && styles.levelPillSelected]}
-                    activeOpacity={0.8}
-                    onPress={() => {
-                      setSelectedLevel((prev) => (prev === level ? null : level));
-                    }}
-                  >
-                    <Text style={[styles.levelText, isSelected && styles.levelTextSelected]}>
-                      {gameName === 'Anagrams'
-                        ? getAnagramThemeForLevel(level)
-                        : gameName === 'Emoji Guess That'
-                        ? getEmojiThemeForLevel(level)
-                        : gameName === 'Rank It!'
-                        ? getRankThemeForLevel(level)
-                        : gameName === 'If You Know, You Know'
-                        ? `Set ${level}`
-                        : `Deck ${level}`}
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={[styles.playedCheckbox, played && styles.playedCheckboxChecked]}
-                    activeOpacity={0.8}
-                    onPress={() => handleTogglePlayed(level)}
-                  >
-                    {played ? <Text style={styles.checkmark}>✓</Text> : null}
-                  </TouchableOpacity>
-                </View>
-              );
-            })}
-          </View>
-        </ScrollView>
-
-        {isStartEnabled && (
-          <View style={styles.bottomSection}>
-            <View style={styles.bottomPanel}>
-              <TouchableOpacity
-                style={styles.startButton}
-                activeOpacity={0.8}
-                onPress={() => {
-                  if (!gameName || selectedLevel == null) return;
-                  if (gameName === 'Anagrams') {
-                    router.push({
-                      pathname: '/anagrams-game',
-                      params: {
-                        game: gameName,
-                        level: String(selectedLevel),
-                        players: playerCount ?? '',
-                      },
-                    });
-                  } else if (gameName === 'Common Knowledge Trivia') {
-                    router.push({
-                      pathname: '/trivia-game',
-                      params: {
-                        game: gameName,
-                        level: String(selectedLevel),
-                        players: playerCount ?? '',
-                      },
-                    });
-                  } else if (gameName === 'Emoji Guess That') {
-                    router.push({
-                      pathname: '/emoji-game',
-                      params: {
-                        game: gameName,
-                        level: String(selectedLevel),
-                        players: playerCount ?? '',
-                      },
-                    });
-                  } else if (gameName === 'Rank It!') {
-                    router.push({
-                      pathname: '/rank-it-game',
-                      params: {
-                        game: gameName,
-                        level: String(selectedLevel),
-                        players: playerCount ?? '',
-                      },
-                    });
-                  } else if (gameName === 'If You Know, You Know') {
-                    router.push({
-                      pathname: '/iykyk-collect',
-                      params: {
-                        game: gameName,
-                        level: String(selectedLevel),
-                        players: playerCount ?? '',
-                      },
-                    });
-                  }
+        {gameName ? <View style={styles.headerContainer}><Text style={styles.gameName}>{gameName}</Text></View> : null}
+        <View style={styles.scrollView}>
+          <ScrollView 
+            contentContainerStyle={styles.scrollContent}
+            showsVerticalScrollIndicator={false}
+          >
+            <View style={styles.horizontalPager} onLayout={(e: LayoutChangeEvent) => setPageWidth(e.nativeEvent.layout.width)}>
+              <ScrollView
+                horizontal
+                pagingEnabled
+                showsHorizontalScrollIndicator={false}
+                onMomentumScrollEnd={(e: NativeSyntheticEvent<NativeScrollEvent>) => {
+                  const x = e.nativeEvent.contentOffset.x;
+                  const w = pageWidth || e.nativeEvent.layoutMeasurement.width;
+                  const page = Math.round(x / w);
+                  setCurrentPage(page);
                 }}
               >
-                <Text style={styles.startButtonText}>Start →</Text>
-              </TouchableOpacity>
+                {/* Page 1: General Levels */}
+                <View style={[styles.page, { width: pageWidth || '100%' }]}>
+                  <Text style={styles.pageHeader}>General Levels</Text>
+                  <View style={styles.levelList}>
+                    {(gameName === 'Common Knowledge Trivia' ? triviaGeneralLevels : levels).map((level) => {
+                      const isSelected = selectedLevel === level;
+                      const played = isPlayed(level);
+                      return (
+                        <View key={level} style={styles.levelRow}>
+                          <TouchableOpacity
+                            style={[styles.levelPill, isSelected && styles.levelPillSelected]}
+                            activeOpacity={0.8}
+                            onPress={() => {
+                              setSelectedLevel((prev) => (prev === level ? null : level));
+                            }}
+                          >
+                            <Text style={[styles.levelText, isSelected && styles.levelTextSelected]}>
+                              {gameName === 'Anagrams'
+                                ? getAnagramThemeForLevel(level)
+                                : gameName === 'Emoji Guess That'
+                                ? getEmojiThemeForLevel(level)
+                                : gameName === 'Rank It!'
+                                ? getRankThemeForLevel(level)
+                                : gameName === 'If You Know, You Know'
+                                ? `Set ${level}`
+                                : `Deck ${level}`}
+                            </Text>
+                          </TouchableOpacity>
+                          <TouchableOpacity
+                            style={[styles.playedCheckbox, played && styles.playedCheckboxChecked]}
+                            activeOpacity={0.8}
+                            onPress={() => handleTogglePlayed(level)}
+                          >
+                            {played ? <Text style={styles.checkmark}>✓</Text> : null}
+                          </TouchableOpacity>
+                        </View>
+                      );
+                    })}
+                  </View>
+                </View>
+                {/* Page 2: After Knight Levels (locked until unlocked for Trivia) */}
+                <View style={[styles.page, { width: pageWidth || '100%' }]}>
+                  <Text style={styles.pageHeader}>After Knight Levels</Text>
+                  <View style={styles.levelList}>
+                    {(gameName === 'Common Knowledge Trivia' ? triviaAfterKnightLevels : levels).map((actualLevel, idx) => {
+                      const displayNumber = gameName === 'Common Knowledge Trivia' ? idx + 1 : actualLevel;
+                      const isSelected = selectedLevel === actualLevel;
+                      const played = isPlayed(actualLevel);
+                      const disabled = gameName === 'Common Knowledge Trivia' && !afterKnightUnlocked;
+                      return (
+                        <View key={`ak-${actualLevel}`} style={styles.levelRow}>
+                          <TouchableOpacity
+                            style={[styles.levelPill, isSelected && styles.levelPillSelected, disabled && styles.levelPillDisabled]}
+                            activeOpacity={disabled ? 1 : 0.8}
+                            onPress={() => {
+                              if (disabled) return;
+                              setSelectedLevel((prev) => (prev === actualLevel ? null : actualLevel));
+                            }}
+                          >
+                            <Text style={[styles.levelText, isSelected && styles.levelTextSelected]}>
+                              {gameName === 'Common Knowledge Trivia' ? `After Knight ${displayNumber}` : `Deck ${displayNumber}`}
+                            </Text>
+                          </TouchableOpacity>
+                          <TouchableOpacity
+                            style={[styles.playedCheckbox, played && styles.playedCheckboxChecked]}
+                            activeOpacity={disabled ? 1 : 0.8}
+                            onPress={() => { if (!disabled) handleTogglePlayed(actualLevel); }}
+                          >
+                            {played ? <Text style={styles.checkmark}>✓</Text> : null}
+                          </TouchableOpacity>
+                        </View>
+                      );
+                    })}
+                  </View>
+                  {gameName === 'Common Knowledge Trivia' && !afterKnightUnlocked ? (
+                    <View pointerEvents="auto" style={styles.lockOverlay}>
+                      <View style={styles.lockCard}>
+                        <Ionicons name="lock-closed-outline" size={44} color="#000000" style={styles.lockIcon} />
+                        <Text style={styles.lockTitle}>After Knight Locked</Text>
+                        <Text style={styles.lockSubtitle}>Tap unlock to access these 20 levels</Text>
+                        <TouchableOpacity
+                          style={styles.unlockButton}
+                          onPress={() => setAfterKnightUnlocked(true)}
+                          activeOpacity={0.85}
+                        >
+                          <Text style={styles.unlockButtonText}>Unlock</Text>
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  ) : null}
+                </View>
+
+                {/* Page 3: Player Created Levels (Coming Soon) */}
+                <View style={[styles.page, { width: pageWidth || '100%' }]}>
+                  <Text style={styles.pageHeader}>Player Created Levels</Text>
+                  <View style={styles.comingSoonContainer}>
+                    <Image
+                      source={require('../assets/images/game-knight-logo.png')}
+                      style={styles.comingSoonImage}
+                      resizeMode="contain"
+                    />
+                    <Text style={styles.comingSoonText}>Coming Soon</Text>
+                  </View>
+                </View>
+              </ScrollView>
             </View>
+          </ScrollView>
+        </View>
+
+        <View style={styles.bottomSection}>
+          <View style={styles.bottomPanel}>
+            <View style={styles.pageDotsContainer}>
+              <View style={[styles.dot, currentPage === 0 && styles.dotActive]} />
+              <View style={[styles.dot, currentPage === 1 && styles.dotActive]} />
+              <View style={[styles.dot, currentPage === 2 && styles.dotActive]} />
+            </View>
+            <TouchableOpacity
+              style={[
+                styles.startButton,
+                !isStartEnabled && styles.startButtonDisabled
+              ]}
+              activeOpacity={isStartEnabled ? 0.8 : 1}
+              onPress={() => {
+                if (!isStartEnabled || !gameName || selectedLevel == null) return;
+                if (gameName === 'Anagrams') {
+                  router.push({
+                    pathname: '/anagrams-game',
+                    params: {
+                      game: gameName,
+                      level: String(selectedLevel),
+                      players: playerCount ?? '',
+                    },
+                  });
+                } else if (gameName === 'Common Knowledge Trivia') {
+                  router.push({
+                    pathname: '/trivia-game',
+                    params: {
+                      game: gameName,
+                      level: String(selectedLevel),
+                      players: playerCount ?? '',
+                    },
+                  });
+                } else if (gameName === 'Emoji Guess That') {
+                  router.push({
+                    pathname: '/emoji-game',
+                    params: {
+                      game: gameName,
+                      level: String(selectedLevel),
+                      players: playerCount ?? '',
+                    },
+                  });
+                } else if (gameName === 'Rank It!') {
+                  router.push({
+                    pathname: '/rank-it-game',
+                    params: {
+                      game: gameName,
+                      level: String(selectedLevel),
+                      players: playerCount ?? '',
+                    },
+                  });
+                } else if (gameName === 'If You Know, You Know') {
+                  router.push({
+                    pathname: '/iykyk-collect',
+                    params: {
+                      game: gameName,
+                      level: String(selectedLevel),
+                      players: playerCount ?? '',
+                    },
+                  });
+                }
+              }}
+              disabled={!isStartEnabled}
+            >
+              <Text style={[
+                styles.startButtonText,
+                !isStartEnabled && styles.startButtonTextDisabled
+              ]}>Start →</Text>
+            </TouchableOpacity>
           </View>
-        )}
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -199,45 +291,59 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     paddingHorizontal: 24,
     paddingTop: 12,
-    paddingBottom: 16,
-  },
-  headerRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: '#E6E6E6',
-    paddingBottom: 12,
-  },
-  logoTapArea: {
-    padding: 4,
-    marginRight: 4,
-  },
-  logoImage: {
-    width: 40,
-    height: 40,
-  },
-  appName: {
-    fontSize: 24,
-    fontWeight: '600',
-    flex: 1,
-  },
-  backButton: {
-    padding: 4,
-    marginRight: 16,
+    paddingBottom: 10,
   },
   contentWrapper: {
     flex: 1,
   },
+  headerContainer: {
+    paddingTop: 4,
+    paddingBottom: 4,
+    backgroundColor: '#ffffff',
+    zIndex: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ffffffff',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 5,
+  },
+  scrollView: {
+    flex: 1,
+  },
   scrollContent: {
+    paddingTop: 8,
     paddingBottom: 24,
   },
-  gameName: {
-    marginTop: 24,
-    marginBottom: 24,
-    fontSize: 24,
-    fontWeight: '700',
-    textAlign: 'center',
+  horizontalPager: {
+    width: '100%',
+  },
+  page: {
+    flex: 1,
+  },
+  pageHeader: {
+    fontSize: 18,
+    fontWeight: '600',
     color: '#00AEEF',
+    paddingHorizontal: 20,
+    paddingTop: 6,
+    paddingBottom: 15,
+  },
+  gameName: {
+    fontSize: 25,
+    fontWeight: '600',
+    textAlign: 'center',
+    color: '#000000',
+    paddingVertical: 6,
+  },
+  sectionHeader: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#00AEEF',
+    paddingHorizontal: 20,
+    paddingTop: 6,
+    paddingBottom: 15,
   },
   levelList: {
     flexDirection: 'column',
@@ -251,10 +357,10 @@ const styles = StyleSheet.create({
   },
   levelPill: {
     flex: 1,
-    paddingVertical: 16,
+    paddingVertical: 8,
     paddingHorizontal: 20,
     borderRadius: 25,
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: '#000000',
     backgroundColor: '#ffffff',
     alignItems: 'center',
@@ -267,6 +373,10 @@ const styles = StyleSheet.create({
   },
   levelPillSelected: {
     backgroundColor: '#000000',
+  },
+  levelPillDisabled: {
+    backgroundColor: '#F5F5F5',
+    borderColor: '#E5E7EB',
   },
   levelText: {
     fontSize: 18,
@@ -296,28 +406,62 @@ const styles = StyleSheet.create({
     color: '#A0A0A0',
   },
   bottomSection: {
-    paddingTop: 8,
-    paddingBottom: 8,
+    paddingTop: 0,
+    paddingBottom: 0,
     alignItems: 'center',
   },
   bottomPanel: {
     width: '100%',
     backgroundColor: '#ffffff',
-    paddingTop: 30,
-    paddingBottom: 4,
+    paddingTop: 26,
+    paddingBottom: 0,
+    borderRadius: 24,
     alignItems: 'center',
     // Top-edge shadow over the scrolling content
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: -2 },
+    shadowOffset: { width: 0, height: -3 },
     shadowOpacity: 0.1,
-    shadowRadius: 6,
+    shadowRadius: 2,
     elevation: 6,
+  },
+  pageDotsContainer: {
+    flexDirection: 'row',
+    gap: 8,
+    marginBottom: 12,
+  },
+  dot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: '#D1D5DB',
+  },
+  dotActive: {
+    backgroundColor: '#00AEEF',
+  },
+  comingSoonContainer: {
+    flex: 1,
+    paddingHorizontal: 20,
+    paddingTop: 130,
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    gap: 10,
+  },
+  comingSoonImage: {
+    width: '70%',
+    height: 160,
+    opacity: 0.2,
+  },
+  comingSoonText: {
+    fontSize: 40,
+    fontWeight: '300',
+    color: '#00AEEF',
+    opacity: 0.2,
   },
   startButton: {
     width: '80%',
-    paddingVertical: 19,
+    paddingVertical: 12,
     borderRadius: 999,
-    backgroundColor: '#00AEEF',
+    backgroundColor: '#000000',
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -329,5 +473,72 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     fontSize: 18,
     fontWeight: '600',
+  },
+  startButtonDisabled: {
+    backgroundColor: '#333333',
+    shadowOpacity: 0,
+    elevation: 0,
+  },
+  startButtonTextDisabled: {
+    color: '#999999',
+  },
+  // Lock overlay for After Knight page
+  lockOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(255,255,255,0.85)',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    paddingHorizontal: 24,
+    paddingTop: 190,
+  },
+  lockCard: {
+    width: '86%',
+    maxWidth: 420,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
+    paddingVertical: 20,
+    paddingHorizontal: 16,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.15,
+    shadowRadius: 10,
+    elevation: 8,
+  },
+  lockIcon: {
+    marginBottom: 8,
+  },
+  lockTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    marginBottom: 4,
+    color: '#111827',
+  },
+  lockSubtitle: {
+    fontSize: 14,
+    color: '#6B7280',
+    marginBottom: 12,
+    textAlign: 'center',
+  },
+  unlockButton: {
+    marginTop: 6,
+    paddingVertical: 10,
+    paddingHorizontal: 22,
+    borderRadius: 999,
+    backgroundColor: '#00AEEF',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  unlockButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '700',
   },
 });
