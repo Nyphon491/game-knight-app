@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useMemo, useState } from 'react';
 import { Image, LayoutChangeEvent, NativeScrollEvent, NativeSyntheticEvent, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Header from './components/Header';
@@ -10,6 +10,7 @@ import { RANK_TOTAL_LEVELS, getRankThemeForLevel } from './data/rankItLevels';
 import { TRIVIA_LEVELS } from './data/triviaLevels';
 
 import { getPlayedLevels, toggleLevelPlayed } from './state/levelProgress';
+import { getPremium } from './state/premium';
 
 export default function LevelSelectScreen() {
   const router = useRouter();
@@ -37,7 +38,14 @@ export default function LevelSelectScreen() {
   const [playedLevelsLocal, setPlayedLevelsLocal] = useState<Set<number>>(
     () => new Set(gameName ? getPlayedLevels(gameName) : []),
   );
-  const [afterKnightUnlocked, setAfterKnightUnlocked] = useState(false);
+  const [afterKnightUnlocked, setAfterKnightUnlocked] = useState(getPremium());
+
+  useFocusEffect(
+    React.useCallback(() => {
+      setAfterKnightUnlocked(getPremium());
+      return () => {};
+    }, [])
+  );
 
   const isPlayed = (level: number) => playedLevelsLocal.has(level);
 
@@ -67,6 +75,16 @@ export default function LevelSelectScreen() {
     return TRIVIA_LEVELS.filter((l) => l.afterKnight).map((l) => l.level);
   }, [gameName]);
 
+  const anagramGeneralLevels = useMemo(() => {
+    if (gameName !== 'Anagrams') return [] as number[];
+    return ANAGRAM_LEVELS.filter((l) => !(l as any).afterKnight).map((l) => l.level);
+  }, [gameName]);
+
+  const anagramAfterKnightLevels = useMemo(() => {
+    if (gameName !== 'Anagrams') return [] as number[];
+    return ANAGRAM_LEVELS.filter((l) => (l as any).afterKnight).map((l) => l.level);
+  }, [gameName]);
+
   // We will render 3 pages:
   // 1) General Levels (levels 1..TOTAL_LEVELS)
   // 2) After Knight Levels (renumbered starting at 1)
@@ -84,6 +102,7 @@ export default function LevelSelectScreen() {
           <ScrollView 
             contentContainerStyle={styles.scrollContent}
             showsVerticalScrollIndicator={false}
+            scrollEnabled={currentPage !== 2}
           >
             <View style={styles.horizontalPager} onLayout={(e: LayoutChangeEvent) => setPageWidth(e.nativeEvent.layout.width)}>
               <ScrollView
@@ -101,7 +120,11 @@ export default function LevelSelectScreen() {
                 <View style={[styles.page, { width: pageWidth || '100%' }]}>
                   <Text style={styles.pageHeader}>General Levels</Text>
                   <View style={styles.levelList}>
-                    {(gameName === 'Common Knowledge Trivia' ? triviaGeneralLevels : levels).map((level) => {
+                    {(gameName === 'Common Knowledge Trivia'
+                      ? triviaGeneralLevels
+                      : gameName === 'Anagrams'
+                      ? anagramGeneralLevels
+                      : levels).map((level) => {
                       const isSelected = selectedLevel === level;
                       const played = isPlayed(level);
                       return (
@@ -141,11 +164,15 @@ export default function LevelSelectScreen() {
                 <View style={[styles.page, { width: pageWidth || '100%' }]}>
                   <Text style={styles.pageHeader}>After Knight Levels</Text>
                   <View style={styles.levelList}>
-                    {(gameName === 'Common Knowledge Trivia' ? triviaAfterKnightLevels : levels).map((actualLevel, idx) => {
-                      const displayNumber = gameName === 'Common Knowledge Trivia' ? idx + 1 : actualLevel;
+                    {(gameName === 'Common Knowledge Trivia'
+                      ? triviaAfterKnightLevels
+                      : gameName === 'Anagrams'
+                      ? anagramAfterKnightLevels
+                      : []).map((actualLevel, idx) => {
+                      const displayNumber = (gameName === 'Common Knowledge Trivia' || gameName === 'Anagrams') ? idx + 1 : actualLevel;
                       const isSelected = selectedLevel === actualLevel;
                       const played = isPlayed(actualLevel);
-                      const disabled = gameName === 'Common Knowledge Trivia' && !afterKnightUnlocked;
+                      const disabled = (gameName === 'Common Knowledge Trivia' || gameName === 'Anagrams') && !afterKnightUnlocked;
                       return (
                         <View key={`ak-${actualLevel}`} style={styles.levelRow}>
                           <TouchableOpacity
@@ -157,7 +184,7 @@ export default function LevelSelectScreen() {
                             }}
                           >
                             <Text style={[styles.levelText, isSelected && styles.levelTextSelected]}>
-                              {gameName === 'Common Knowledge Trivia' ? `After Knight ${displayNumber}` : `Deck ${displayNumber}`}
+                              {(gameName === 'Common Knowledge Trivia' || gameName === 'Anagrams') ? `After Knight ${displayNumber}` : `Deck ${displayNumber}`}
                             </Text>
                           </TouchableOpacity>
                           <TouchableOpacity
@@ -171,18 +198,18 @@ export default function LevelSelectScreen() {
                       );
                     })}
                   </View>
-                  {gameName === 'Common Knowledge Trivia' && !afterKnightUnlocked ? (
+                  {(gameName === 'Common Knowledge Trivia' || gameName === 'Anagrams') && !afterKnightUnlocked ? (
                     <View pointerEvents="auto" style={styles.lockOverlay}>
                       <View style={styles.lockCard}>
                         <Ionicons name="lock-closed-outline" size={44} color="#000000" style={styles.lockIcon} />
                         <Text style={styles.lockTitle}>After Knight Locked</Text>
-                        <Text style={styles.lockSubtitle}>Tap unlock to access these 20 levels</Text>
+                        <Text style={styles.lockSubtitle}>Become a member to access these levels</Text>
                         <TouchableOpacity
                           style={styles.unlockButton}
-                          onPress={() => setAfterKnightUnlocked(true)}
+                          onPress={() => router.push('/gameknightplus')}
                           activeOpacity={0.85}
                         >
-                          <Text style={styles.unlockButtonText}>Unlock</Text>
+                          <Text style={styles.unlockButtonText}>Game Knight +</Text>
                         </TouchableOpacity>
                       </View>
                     </View>
@@ -200,6 +227,22 @@ export default function LevelSelectScreen() {
                     />
                     <Text style={styles.comingSoonText}>Coming Soon</Text>
                   </View>
+                  {(gameName === 'Common Knowledge Trivia' || gameName === 'Anagrams') && !afterKnightUnlocked ? (
+                    <View pointerEvents="auto" style={styles.lockOverlay}>
+                      <View style={styles.lockCard}>
+                        <Ionicons name="lock-closed-outline" size={44} color="#000000" style={styles.lockIcon} />
+                        <Text style={styles.lockTitle}>After Knight Locked</Text>
+                        <Text style={styles.lockSubtitle}>Become a member to access these levels</Text>
+                        <TouchableOpacity
+                          style={styles.unlockButton}
+                          onPress={() => router.push('/gameknightplus')}
+                          activeOpacity={0.85}
+                        >
+                          <Text style={styles.unlockButtonText}>Game Knight +</Text>
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  ) : null}
                 </View>
               </ScrollView>
             </View>

@@ -2,6 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { useEffect, useRef, useState } from 'react';
 import { Animated, Dimensions, Image, Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { getPremium } from '../state/premium';
 
 type Props = {
   isGameScreen?: boolean;
@@ -123,6 +124,11 @@ export default function Header({ isGameScreen = false, gameName, onMenuPress, on
             >
               <Ionicons name="close" size={32} color="#ffffff" />
             </TouchableOpacity>
+            {getPremium() ? (
+              <View style={styles.premiumBadgeTop}>
+                <Text style={styles.premiumBadgeText}>PREMIUM</Text>
+              </View>
+            ) : null}
             
             <TouchableOpacity 
               style={styles.drawerItem} 
@@ -172,6 +178,20 @@ export default function Header({ isGameScreen = false, gameName, onMenuPress, on
             >
               <Text style={styles.drawerItemText}>QR Code Scanner</Text>
             </TouchableOpacity>
+            
+            <View style={styles.drawerThinLine} />
+            
+            <View style={styles.drawerItem}>
+              <TouchableOpacity 
+                style={styles.drawerButton}
+                onPress={() => { 
+                  handleCloseDrawer(); 
+                  router.push({ pathname: '/gameknightplus' }); 
+                }}
+              >
+                <Text style={styles.drawerItemText}>Game Knight+</Text>
+              </TouchableOpacity>
+            </View>
             
             <View style={styles.drawerThinLine} />
           </Animated.View>
@@ -271,9 +291,43 @@ const styles = StyleSheet.create({
     padding: 8,
     zIndex: 999, // Ensure it's above the drawer
   },
+  premiumBadgeTop: {
+    position: 'absolute',
+    top: 60,
+    right: 16,
+    backgroundColor: '#FFD700',
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 4,
+    zIndex: 999,
+  },
   drawerItem: {
-    paddingVertical: 12,
-    paddingLeft: 8,
+    paddingVertical: 14,
+    paddingHorizontal: 20,
+    marginVertical: 4,
+    borderRadius: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+    position: 'relative',
+  },
+  premiumBadge: {
+    backgroundColor: '#FFD700',
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 4,
+    marginLeft: 8,
+  },
+  drawerButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flex: 1,
+  },
+  premiumBadgeText: {
+    color: '#000',
+    fontSize: 10,
+    fontWeight: '800',
+    textTransform: 'uppercase',
   },
   drawerItemText: {
     color: '#ffffff',

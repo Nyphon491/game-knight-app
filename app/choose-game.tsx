@@ -416,11 +416,11 @@ const styles = StyleSheet.create({
   popularSection: {
     backgroundColor: '#f0f8ff',
     borderWidth: 0.75,
-    borderColor: '#d4e9ff',
-    borderRadius: 12,
+    borderColor: '#e6e6e6ff',
+    borderRadius: 0,
     marginTop: 12,
     marginBottom: 8,
-    marginHorizontal: -8,  // Extend beyond container padding
+    marginHorizontal: -20,  // Extend beyond container padding
     paddingHorizontal: 20,  // Match container padding + some extra
     paddingTop: 8,
     paddingBottom: 8,
